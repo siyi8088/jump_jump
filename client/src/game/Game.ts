@@ -14,6 +14,9 @@ import {
   MAX_CHARGE_TIME,
   PLAYER_Y_OFFSET,
 } from '../utils/Constants';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 /**
  * Main game controller – orchestrates all subsystems.
@@ -29,6 +32,7 @@ export class Game {
   private scoreManager: ScoreManager;
   private particles: ParticleSystem;
   private audio: AudioManager;
+  private composer: EffectComposer;
 
   // State
   private state: GameState = GameState.READY;
@@ -72,10 +76,24 @@ export class Game {
       }
     });
 
+    // Setup Post-Processing (Bloom)
+    this.composer = new EffectComposer(this.gameScene.renderer);
+    const renderPass = new RenderPass(this.gameScene.scene, this.gameCamera.camera);
+    this.composer.addPass(renderPass);
+
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(container.clientWidth, container.clientHeight),
+      1.5, // strength
+      0.4, // radius
+      0.85 // threshold
+    );
+    this.composer.addPass(bloomPass);
+
     // Resize camera on window resize
     window.addEventListener('resize', () => {
       const cam = this.gameCamera.camera;
       this.gameScene.renderer.setSize(container.clientWidth, container.clientHeight);
+      this.composer.setSize(container.clientWidth, container.clientHeight);
       cam.updateProjectionMatrix();
     });
   }
@@ -187,7 +205,7 @@ export class Game {
     this.particles.update(dt);
 
     // Render
-    this.gameScene.render(this.gameCamera.camera);
+    this.composer.render();
   };
 
   private onInputStart(): void {

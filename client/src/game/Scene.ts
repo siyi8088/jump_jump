@@ -71,18 +71,13 @@ export class GameScene {
   }
 
   private setupGround(): void {
-    const geo = new THREE.PlaneGeometry(200, 200);
-    const mat = new THREE.MeshStandardMaterial({
-      color: COLORS.GROUND,
-      roughness: 1.0,
-      metalness: 0.0,
-      depthWrite: false, // Helps blend with fog
-    });
-    const ground = new THREE.Mesh(geo, mat);
-    ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -0.5;
-    ground.receiveShadow = true;
-    this.scene.add(ground);
+    // Cyberpunk Neon Grid
+    const gridHelper = new THREE.GridHelper(200, 100, 0x00F3FF, 0x222222);
+    gridHelper.position.y = -0.5;
+    // Add a subtle glow to the grid lines
+    (gridHelper.material as THREE.LineBasicMaterial).transparent = true;
+    (gridHelper.material as THREE.LineBasicMaterial).opacity = 0.5;
+    this.scene.add(gridHelper);
   }
 
   public render(camera: THREE.Camera): void {

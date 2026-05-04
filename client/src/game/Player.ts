@@ -82,14 +82,21 @@ export class Player {
     const mat = new THREE.MeshStandardMaterial({
       color: COLORS.PLAYER_WHITE,
       emissive: COLORS.PLAYER_ACCENT,
-      emissiveIntensity: 0.2,
+      emissiveIntensity: 0.6,
       side: THREE.DoubleSide,
       flatShading: true,
-      roughness: 0.2,
-      metalness: 0.6,
+      roughness: 0.1,
+      metalness: 0.9,
     });
 
     const mesh = new THREE.Mesh(geo, mat);
+
+    // Glowing wireframe edges
+    const edgesGeo = new THREE.EdgesGeometry(geo);
+    const edgesMat = new THREE.LineBasicMaterial({ color: COLORS.PLAYER_ACCENT });
+    const edges = new THREE.LineSegments(edgesGeo, edgesMat);
+    mesh.add(edges);
+
     return mesh;
   }
 

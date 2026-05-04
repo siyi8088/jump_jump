@@ -43,21 +43,24 @@ export const DIFFICULTY_DIST_INCREMENT = 0.08;
 export const DIFFICULTY_SIZE_DECREMENT = 0.03;
 export const MIN_PLATFORM_SIZE = 0.55;
 
-// ─── Colors (TG theme & Deep Space) ───
+// ─── Colors (Cyberpunk Theme) ───
 export const COLORS = {
-  BG_TOP:        0x09101E,
-  BG_BOTTOM:     0x09101E,
-  TG_BLUE:       0x2AABEE,
-  TG_BLUE_DARK:  0x229ED9,
+  BG_TOP:        0x0A0A0A, // Extreme dark for digital abyss
+  BG_BOTTOM:     0x050505,
+  CYAN:          0x00F3FF, // Cyberpunk Cyan
+  CRIMSON:       0xFF003C, // Deep Red
+  PURPLE:        0xB026FF, // Electric Purple
+  TG_BLUE:       0x00F3FF, // Repurposing TG blue to Neon Cyan for platforms
+  TG_BLUE_DARK:  0x0A0A0A,
   TG_GREEN:      0x39FF14, // Neon green
   PADLOCK_GOLD:  0xFFD700, // Bright gold
-  SERVER_DARK:   0x1F2A38, // Darker server
-  PLAYER_WHITE:  0xFFFFFF, // Pure white
-  PLAYER_ACCENT: 0x2AABEE, // TG blue
+  SERVER_DARK:   0x111111, // Very dark server base
+  PLAYER_WHITE:  0x1A1A1A, // Stealth dark grey for player
+  PLAYER_ACCENT: 0x00F3FF, // Cyan accent
   SHADOW:        0x000000,
-  AMBIENT:       0x8899AA,
-  DIRECTIONAL:   0xFFEEDD,
-  GROUND:        0x09101E, // Match background
+  AMBIENT:       0x444444,
+  DIRECTIONAL:   0xFFFFFF,
+  GROUND:        0x000000,
 };
 
 // ─── Platform Types ───

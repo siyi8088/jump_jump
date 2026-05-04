@@ -51,6 +51,10 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   res.status(500).json({ error: 'Internal server error' });
 });
 
+// ─── Bot Initialization ───
+import { initBot } from './bot.js';
+initBot();
+
 // ─── Start ───
 app.listen(config.port, () => {
   console.log(`🚀 Jump Jump server running on port ${config.port}`);

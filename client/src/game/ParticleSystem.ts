@@ -48,7 +48,7 @@ export class ParticleSystem {
 
   /** Emit particles for jump trail. */
   public emitTrail(pos: THREE.Vector3): void {
-    const color = new THREE.Color(Math.random() > 0.5 ? 0x3390EC : 0xFFFFFF);
+    const color = new THREE.Color(Math.random() > 0.5 ? 0x00F3FF : 0xB026FF);
     // Slight random offset from center
     const offsetPos = pos.clone().add(new THREE.Vector3(
       (Math.random() - 0.5) * 0.1,
