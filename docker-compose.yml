@@ -34,9 +34,26 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       PORT: 3001
       NODE_ENV: production
-      CORS_ORIGIN: https://${DOMAIN}
+      CORS_ORIGIN: https://${DOMAIN:-jump.garden}
+    # 移除端口暴露，由 Caddy 在内部网络进行反向代理
+
+  # ─── Web Server & Auto HTTPS (取代 Nginx) ───
+  caddy:
+    image: caddy:2-alpine
+    container_name: jump-caddy
+    restart: unless-stopped
     ports:
-      - "127.0.0.1:3001:3001"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./client/dist:/srv  # 挂载前端打包好的静态文件
+      - caddy_data:/data    # 持久化 Let's Encrypt 证书
+      - caddy_config:/config
+    depends_on:
+      - api
 
 volumes:
   pgdata:
+  caddy_data:
+  caddy_config:

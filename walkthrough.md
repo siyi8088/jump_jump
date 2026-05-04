@@ -5,7 +5,7 @@
 ```mermaid
 graph LR
     U[Telegram 用户] -->|HTTPS| N[Nginx :443]
-    N -->|静态文件| F[/var/www/jump-jump<br>前端 dist/]
+    N -->|静态文件| F[/var/www/jump_jump<br>前端 dist/]
     N -->|/api/*| A[Docker: API :3001]
     A --> P[Docker: PostgreSQL :5432]
 ```
@@ -50,11 +50,11 @@ echo "POSTGRES_PASSWORD=$(openssl rand -hex 16)"
 # 从本地上传到服务器
 rsync -avz --exclude='node_modules' --exclude='.git' \
   /Users/siyi/Documents/code/jump_jump/ \
-  root@161.33.197.216:/opt/jump-jump/
+  root@161.33.197.216:/apps/jump_jump/
 ```
 
 > [!TIP]
-> 如果你习惯用其他方式（scp / git clone），只要把整个 `jump_jump` 目录放到服务器 `/opt/jump-jump/` 即可。
+> 如果你习惯用其他方式（scp / git clone），只要把整个 `jump_jump` 目录放到服务器 `/apps/jump_jump/` 即可。
 
 ---
 
@@ -86,16 +86,16 @@ systemctl enable nginx && systemctl start nginx
 ### 3.3 部署前端静态文件
 
 ```bash
-mkdir -p /var/www/jump-jump
-cp -r /opt/jump-jump/client/dist/* /var/www/jump-jump/
+mkdir -p /var/www/jump_jump
+cp -r /apps/jump_jump/client/dist/* /var/www/jump_jump/
 ```
 
 ### 3.4 配置 Nginx
 
 ```bash
 # 复制配置
-cp /opt/jump-jump/nginx.conf /etc/nginx/sites-available/jump-jump
-ln -sf /etc/nginx/sites-available/jump-jump /etc/nginx/sites-enabled/
+cp /apps/jump_jump/nginx.conf /etc/nginx/sites-available/jump_jump
+ln -sf /etc/nginx/sites-available/jump_jump /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 
 # 测试配置（先注释掉 SSL 部分，等证书拿到再启用）
@@ -137,7 +137,7 @@ systemctl enable certbot.timer
 ## Step 5: 启动后端服务
 
 ```bash
-cd /opt/jump-jump
+cd /apps/jump_jump
 
 # 复制环境变量
 cp .env.production .env
@@ -226,10 +226,10 @@ docker compose logs -f postgres
 docker compose restart api
 
 # 更新代码后重新部署
-cd /opt/jump-jump
+cd /apps/jump_jump
 git pull  # 或 rsync 上传
 docker compose up -d --build           # 重建 API
-cp -r client/dist/* /var/www/jump-jump/  # 更新前端
+cp -r client/dist/* /var/www/jump_jump/  # 更新前端
 
 # 数据库备份
 docker compose exec postgres pg_dump -U postgres jumpjump > backup_$(date +%Y%m%d).sql

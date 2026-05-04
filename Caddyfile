@@ -1,0 +1,21 @@
+jump.garden {
+    # 启用 Gzip 等压缩
+    encode gzip zstd
+
+    # 反向代理后端 API
+    handle /api/* {
+        reverse_proxy api:3001
+    }
+
+    # 反向代理健康检查
+    handle /health {
+        reverse_proxy api:3001
+    }
+
+    # 代理前端静态文件 (SPA 路由)
+    handle {
+        root * /srv
+        try_files {path} /index.html
+        file_server
+    }
+}
