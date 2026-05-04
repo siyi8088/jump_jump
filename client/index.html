@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="description" content="Jump Jump - A Telegram Mini App Game" />
+  <title>Jump Jump</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles/index.css" />
+</head>
+<body>
+  <!-- Game Canvas Container -->
+  <div id="game-container"></div>
+
+  <!-- UI Overlay Layer -->
+  <div id="ui-overlay">
+    <!-- Score HUD -->
+    <div id="score-hud" class="hidden">
+      <div id="current-score">0</div>
+    </div>
+
+    <!-- Combo Display -->
+    <div id="combo-display" class="hidden">
+      <div id="combo-text"></div>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen">
+      <div class="start-content">
+        <div class="logo-container">
+          <div class="paper-plane-icon">✈</div>
+          <h1 class="game-title">JUMP JUMP</h1>
+          <p class="game-subtitle">Telegram Edition</p>
+        </div>
+        <div class="best-score-display">
+          <span class="label">BEST</span>
+          <span id="best-score-value">0</span>
+        </div>
+        <button id="btn-start" class="btn-primary">START GAME</button>
+        <div class="start-buttons">
+          <button id="btn-leaderboard" class="btn-secondary">🏆 Leaderboard</button>
+          <button id="btn-sound" class="btn-secondary btn-icon">🔊</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen hidden">
+      <div class="gameover-content">
+        <h2 class="gameover-title">GAME OVER</h2>
+        <div class="final-score">
+          <span class="label">SCORE</span>
+          <span id="final-score-value">0</span>
+        </div>
+        <div id="new-record" class="new-record hidden">🎉 NEW RECORD!</div>
+        <div class="gameover-stats">
+          <div class="stat">
+            <span class="stat-label">Best Combo</span>
+            <span id="final-combo">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Jumps</span>
+            <span id="final-jumps">0</span>
+          </div>
+        </div>
+        <button id="btn-restart" class="btn-primary">PLAY AGAIN</button>
+        <div class="gameover-buttons">
+          <button id="btn-share" class="btn-secondary">📤 Share</button>
+          <button id="btn-leaderboard2" class="btn-secondary">🏆 Ranking</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Screen -->
+    <div id="leaderboard-screen" class="screen hidden">
+      <div class="leaderboard-content">
+        <div class="lb-header">
+          <button id="btn-lb-back" class="lb-back-btn" aria-label="Back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h2 class="lb-title">🏆 LEADERBOARD</h2>
+        </div>
+        <div class="lb-tabs">
+          <button class="lb-tab active" data-type="daily">Today</button>
+          <button class="lb-tab" data-type="weekly">This Week</button>
+          <button class="lb-tab" data-type="all">All Time</button>
+        </div>
+        <div id="lb-list" class="lb-list">
+          <div class="lb-loading">Loading...</div>
+        </div>
+        <div id="lb-user-rank" class="lb-user-rank hidden">
+          <span class="lb-user-rank-label">Your Rank</span>
+          <span id="lb-user-rank-value">#—</span>
+          <span id="lb-user-score-value">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-screen Easter Egg Effects -->
+    <canvas id="effects-canvas" class="hidden"></canvas>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
