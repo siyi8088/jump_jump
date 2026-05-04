@@ -45,22 +45,22 @@ export const MIN_PLATFORM_SIZE = 0.55;
 
 // ─── Colors (Cyberpunk Theme) ───
 export const COLORS = {
-  BG_TOP:        0x0A0A0A, // Extreme dark for digital abyss
-  BG_BOTTOM:     0x050505,
-  CYAN:          0x00F3FF, // Cyberpunk Cyan
-  CRIMSON:       0xFF003C, // Deep Red
+  BG_TOP:        0x0B1628, // Deep navy blue (matches poster atmosphere)
+  BG_BOTTOM:     0x091220,
+  CYAN:          0x00C8FF, // Vivid Cyan
+  CRIMSON:       0xFF2244, // Bright Red
   PURPLE:        0xB026FF, // Electric Purple
-  TG_BLUE:       0x00F3FF, // Repurposing TG blue to Neon Cyan for platforms
-  TG_BLUE_DARK:  0x0A0A0A,
+  TG_BLUE:       0x2AABEE, // Telegram Blue — keep recognizable
+  TG_BLUE_DARK:  0x0B1628,
   TG_GREEN:      0x39FF14, // Neon green
-  PADLOCK_GOLD:  0xFFD700, // Bright gold
-  SERVER_DARK:   0x111111, // Very dark server base
-  PLAYER_WHITE:  0x1A1A1A, // Stealth dark grey for player
-  PLAYER_ACCENT: 0x00F3FF, // Cyan accent
+  PADLOCK_GOLD:  0xFFC800, // Brighter gold
+  SERVER_DARK:   0x1A1A2E, // Dark indigo for server base
+  PLAYER_WHITE:  0x2A2A3A, // Stealth grey-blue
+  PLAYER_ACCENT: 0x00C8FF, // Cyan accent
   SHADOW:        0x000000,
-  AMBIENT:       0x444444,
+  AMBIENT:       0x556688,
   DIRECTIONAL:   0xFFFFFF,
-  GROUND:        0x000000,
+  GROUND:        0x0B1628,
 };
 
 // ─── Platform Types ───

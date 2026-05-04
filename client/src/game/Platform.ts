@@ -56,11 +56,11 @@ export class Platform {
     const geo = new THREE.BoxGeometry(s, PLATFORM_HEIGHT, s);
 
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x111111, // Dark base
+      color: 0x1A3848, // Dark teal base
       emissive: COLORS.CYAN,
-      emissiveIntensity: 0.1,
-      roughness: 0.3,
-      metalness: 0.8,
+      emissiveIntensity: 0.5,
+      roughness: 0.15,
+      metalness: 0.7,
     });
 
     const edgesGeo = new THREE.EdgesGeometry(geo);
@@ -70,7 +70,7 @@ export class Platform {
 
     // Add a small "tail" triangle (message bubble tail)
     const tailGeo = new THREE.ConeGeometry(0.12, 0.18, 3);
-    const tailMat = new THREE.MeshStandardMaterial({ color: COLORS.CYAN, emissive: COLORS.CYAN, emissiveIntensity: 0.1, roughness: 0.2, metalness: 0.8 });
+    const tailMat = new THREE.MeshStandardMaterial({ color: COLORS.CYAN, emissive: COLORS.CYAN, emissiveIntensity: 0.4, roughness: 0.2, metalness: 0.7 });
     const tail = new THREE.Mesh(tailGeo, tailMat);
     tail.position.set(-s / 2 - 0.06, -PLATFORM_HEIGHT / 2 + 0.08, -s / 2 + 0.2);
     tail.rotation.z = Math.PI / 2 + 0.3;
@@ -85,11 +85,11 @@ export class Platform {
     const r = this.size / 2;
     const geo = new THREE.CylinderGeometry(r, r, PLATFORM_HEIGHT, 16);
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x111111,
+      color: 0x0A2A0A, // Dark green base
       emissive: COLORS.TG_GREEN,
-      emissiveIntensity: 0.1,
-      roughness: 0.3,
-      metalness: 0.8,
+      emissiveIntensity: 0.5,
+      roughness: 0.15,
+      metalness: 0.7,
     });
 
     const edgesGeo = new THREE.EdgesGeometry(geo);
@@ -129,10 +129,10 @@ export class Platform {
     const geo = new THREE.BoxGeometry(s, PLATFORM_HEIGHT, s);
     
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x111111,
+      color: 0x3A2800, // Dark amber base
       emissive: COLORS.PADLOCK_GOLD,
-      emissiveIntensity: 0.1,
-      roughness: 0.3,
+      emissiveIntensity: 0.5,
+      roughness: 0.1,
       metalness: 0.8,
     });
 
@@ -144,9 +144,11 @@ export class Platform {
     // Add lock shackle on top
     const shackleGeo = new THREE.TorusGeometry(s * 0.2, 0.04, 8, 16, Math.PI);
     const shackleMat = new THREE.MeshStandardMaterial({
-      color: 0xd4941a,
+      color: COLORS.PADLOCK_GOLD,
+      emissive: COLORS.PADLOCK_GOLD,
+      emissiveIntensity: 0.3,
       roughness: 0.1,
-      metalness: 0.8,
+      metalness: 0.9,
     });
     const shackle = new THREE.Mesh(shackleGeo, shackleMat);
     shackle.position.y = PLATFORM_HEIGHT / 2 + s * 0.15;
@@ -155,7 +157,7 @@ export class Platform {
 
     // Keyhole
     const keyGeo = new THREE.CircleGeometry(s * 0.06, 12);
-    const keyMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 });
+    const keyMat = new THREE.MeshStandardMaterial({ color: 0x0A0A0A, roughness: 0.8 });
     const keyhole = new THREE.Mesh(keyGeo, keyMat);
     keyhole.position.set(0, PLATFORM_HEIGHT / 2 + 0.01, s * 0.08);
     keyhole.rotation.x = -Math.PI / 2;
@@ -171,9 +173,9 @@ export class Platform {
     const mat = new THREE.MeshStandardMaterial({
       color: COLORS.SERVER_DARK,
       emissive: COLORS.CRIMSON,
-      emissiveIntensity: 0.05,
-      roughness: 0.2,
-      metalness: 0.9,
+      emissiveIntensity: 0.3,
+      roughness: 0.15,
+      metalness: 0.8,
     });
 
     const edgesGeo = new THREE.EdgesGeometry(geo);
@@ -181,11 +183,11 @@ export class Platform {
     const edges = new THREE.LineSegments(edgesGeo, edgesMat);
     this.decorations.add(edges);
 
-    // LED dots on top
+    // LED dots on top — bright emissive
     for (let i = 0; i < 3; i++) {
-      const ledGeo = new THREE.SphereGeometry(0.03, 6, 6);
-      const ledColor = [0x00ff00, 0x00ff00, 0xff6600][i];
-      const ledMat = new THREE.MeshBasicMaterial({ color: ledColor });
+      const ledGeo = new THREE.SphereGeometry(0.04, 8, 8);
+      const ledColor = [0x00ff66, 0x00ff66, 0xff6600][i];
+      const ledMat = new THREE.MeshStandardMaterial({ color: ledColor, emissive: ledColor, emissiveIntensity: 2.0 });
       const led = new THREE.Mesh(ledGeo, ledMat);
       led.position.set(-s * 0.2 + i * s * 0.2, PLATFORM_HEIGHT * 0.6 + 0.02, -s * 0.2);
       this.decorations.add(led);
@@ -194,7 +196,7 @@ export class Platform {
     // Horizontal rack lines
     for (let i = 0; i < 2; i++) {
       const lineGeo = new THREE.BoxGeometry(s * 0.8, 0.02, 0.02);
-      const lineMat = new THREE.MeshStandardMaterial({ color: 0x4a6580, roughness: 0.3, metalness: 0.5 });
+      const lineMat = new THREE.MeshStandardMaterial({ color: 0x4488AA, emissive: 0x224466, emissiveIntensity: 0.3, roughness: 0.3, metalness: 0.5 });
       const line = new THREE.Mesh(lineGeo, lineMat);
       line.position.set(0, PLATFORM_HEIGHT * 0.6 + 0.01, -s * 0.05 + i * s * 0.2);
       this.decorations.add(line);

@@ -83,9 +83,9 @@ export class Game {
 
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(container.clientWidth, container.clientHeight),
-      1.5, // strength
-      0.4, // radius
-      0.85 // threshold
+      1.2, // strength — how far glow extends
+      0.5, // radius — softness of glow
+      0.3  // threshold — lower = more things glow
     );
     this.composer.addPass(bloomPass);
 
