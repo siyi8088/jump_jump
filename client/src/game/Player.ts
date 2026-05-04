@@ -29,59 +29,62 @@ export class Player {
     // Subtle shadow
     this.body.castShadow = true;
   }
-private createAirplane(): THREE.Mesh {
-    // ── TG Classic Paper Plane Geometry ──
-    // 还原 TG 纸飞机的经典比例：机翼更宽，龙骨更深
-    const geo = new THREE.BufferGeometry();
-    const s = 1.6; // 整体缩放系数
 
+private createAirplane(): THREE.Mesh {
+    // ── 绝对正宗的 TG Logo 几何体 (不对称 3D 建模) ──
+    const geo = new THREE.BufferGeometry();
+    const s = 1.3; 
+
+    // 严格按照 TG Logo 的三个块面进行顶点映射
     const vertices = new Float32Array([
-      // 0: 机头 (Nose - 缩短一点，不那么尖)
-       0.0,      0.0,     -1.2 * s,
-      // 1: 左翼尖 (Left Wingtip - 展翼更宽)
-      -1.2 * s,  0.5 * s,  0.8 * s,
-      // 2: 右翼尖 (Right Wingtip)
-       1.2 * s,  0.5 * s,  0.8 * s,
-      // 3: 顶部中心折谷 (Center Top Valley - 折痕变浅)
-       0.0,      0.1 * s,  0.4 * s,
-      // 4: 底部龙骨尖端 (Bottom Keel - TG 特有的深邃底边，大幅度向下延伸)
-       0.0,     -0.9 * s,  0.6 * s,
+      // 0: 机头 (Nose - 永远指向前)
+       0.0 * s,   0.0 * s,  -1.5 * s,
+      // 1: 左翼尖 (Left Wing - 标志性的宽大左翼，向后延伸)
+      -1.2 * s,   0.2 * s,   1.0 * s,
+      // 2: 右翼尖 (Right Wing - 较窄且靠前的右翼)
+       0.8 * s,   0.3 * s,  -0.2 * s,
+      // 3: 内部折返点 (Inner Fold - 视错觉的交汇处)
+      -0.4 * s,  -0.2 * s,   0.6 * s,
+      // 4: 底部阴影垂翼 (Bottom Flap - Logo 下方的那块深色三角)
+      -0.3 * s,  -0.8 * s,   0.8 * s,
     ]);
 
-    // 依然使用你原本绝佳的拓扑连接顺序
     const indices = [
-      // Top Left Wing
-      0, 1, 3,
-      // Top Right Wing
-      0, 3, 2,
-      // Bottom Left Wing
-      0, 4, 1,
-      // Bottom Right Wing
-      0, 2, 4,
-      // Back Left
-      1, 4, 3,
-      // Back Right
-      2, 3, 4,
+      0, 1, 3, // 面1：主左翼 (Logo 面积最大的浅蓝色部分)
+      0, 3, 2, // 面2：副右翼 (Logo 右侧的中蓝色部分)
+      1, 4, 3, // 面3：底部下垂翼 (Logo 下方的深蓝色阴影部分)
     ];
 
     geo.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
     geo.setIndex(indices);
     geo.computeVertexNormals();
 
-    // ── 材质光影升级 ──
-    const mat = new THREE.MeshPhysicalMaterial({
-      color: 0xFFFFFF,         // 保持纯白纸张基色
-      emissive: 0x2AABEE,      // 替换为正宗的 Telegram 官方蓝 (Hex: #2AABEE)
-      emissiveIntensity: 0.45, // 调高一点发光强度，在暗色调的赛博空间里更亮眼
-      side: THREE.DoubleSide,  //
-      flatShading: true,       // 必须保持 true 才能有清晰的折纸棱角
-      roughness: 0.2,          // 纸张表面稍微光滑一点
-      metalness: 0.1,          //
-      clearcoat: 0.5,          // 增加一层清漆质感，反光时会有类似高级微拟物（Neumorphism）的高光
-      clearcoatRoughness: 0.2, //[cite: 1]
+    // ── 纯正的 TG 蓝材质 ──
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x2AABEE,        // 换成纯正的 TG 蓝本体！
+      roughness: 0.1,         // 稍微光滑一点
+      metalness: 0.2,
+      side: THREE.DoubleSide, // 极其重要：因为是不对称开放图形，必须双面渲染
+      flatShading: true,
     });
 
     const mesh = new THREE.Mesh(geo, mat);
+
+    // ── 点睛之笔：保留极客白边 ──
+    // 加上白色的描边，让它在暗色背景里极其锐利，完美贴合你发来的 icon 质感
+    const edges = new THREE.EdgesGeometry(geo);
+    const lineMat = new THREE.LineBasicMaterial({ 
+      color: 0xffffff, 
+      transparent: true,
+      opacity: 0.7,
+      linewidth: 2
+    });
+    const lineSegments = new THREE.LineSegments(edges, lineMat);
+    mesh.add(lineSegments);
+
+    // 因为是不对称图形，稍微调整一下初始倾角，让它在正交相机下完美呈现 Logo 的角度
+    mesh.rotation.z = Math.PI / 16; 
+    mesh.rotation.x = -Math.PI / 24;
 
     return mesh;
   }
