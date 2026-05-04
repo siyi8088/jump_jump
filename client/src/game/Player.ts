@@ -78,40 +78,19 @@ export class Player {
     geo.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
     geo.setIndex(indices);
     geo.computeVertexNormals();
-
-    // ── Bright translucent blue material (like poster) ──
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0x44AAEE,         // Bright TG blue
-      emissive: 0x00BBFF,      // Strong cyan-blue glow
-      emissiveIntensity: 0.8,
+    const mat = new THREE.MeshPhysicalMaterial({
+      color: 0x38BDF8,         // Clean Sky Blue
+      emissive: 0x0284C7,      // Very subtle deeper blue emissive
+      emissiveIntensity: 0.2,
       side: THREE.DoubleSide,
       flatShading: true,
-      roughness: 0.0,
-      metalness: 0.3,
-      transparent: true,
-      opacity: 0.9,
+      roughness: 0.1,
+      metalness: 0.1,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1,
     });
 
     const mesh = new THREE.Mesh(geo, mat);
-
-    // ── Glowing cyan wireframe edges (Bloom will pick this up) ──
-    const edgesGeo = new THREE.EdgesGeometry(geo);
-    const edgesMat = new THREE.LineBasicMaterial({ color: 0x88EEFF });
-    const edges = new THREE.LineSegments(edgesGeo, edgesMat);
-    mesh.add(edges);
-
-    // ── Bottom glow disc (ground reflection halo) ──
-    const glowGeo = new THREE.CircleGeometry(0.5 * s, 16);
-    const glowMat = new THREE.MeshBasicMaterial({
-      color: 0x00CCFF,
-      transparent: true,
-      opacity: 0.25,
-      side: THREE.DoubleSide,
-    });
-    const glow = new THREE.Mesh(glowGeo, glowMat);
-    glow.rotation.x = -Math.PI / 2;
-    glow.position.y = -0.15 * s;
-    mesh.add(glow);
 
     return mesh;
   }

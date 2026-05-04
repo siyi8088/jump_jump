@@ -28,7 +28,7 @@ export class GameScene {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.5;
+    this.renderer.toneMappingExposure = 1.0; // Normal exposure
     container.appendChild(this.renderer.domElement);
 
     // ── Lighting ──
@@ -42,17 +42,17 @@ export class GameScene {
   }
 
   private setupLights(): void {
-    // Ambient — brighter so objects aren't lost in shadow
-    const ambient = new THREE.AmbientLight(COLORS.AMBIENT, 1.0);
+    // Soft ambient
+    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
     this.scene.add(ambient);
 
-    // Hemisphere (sky / ground) — blue sky, dark ground
-    const hemi = new THREE.HemisphereLight(0x4488cc, 0x112244, 0.6);
+    // Hemisphere (sky / ground)
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.4);
     this.scene.add(hemi);
 
-    // Main directional (key light)
-    const dir = new THREE.DirectionalLight(COLORS.DIRECTIONAL, 1.8);
-    dir.position.set(8, 18, 10);
+    // Main directional (key light) - cast soft shadows
+    const dir = new THREE.DirectionalLight(0xffffff, 1.0);
+    dir.position.set(5, 10, 7);
     dir.castShadow = true;
     dir.shadow.mapSize.set(2048, 2048);
     dir.shadow.camera.left   = -CAMERA_FRUSTUM * 2;
@@ -64,28 +64,22 @@ export class GameScene {
     dir.shadow.bias = -0.001;
     this.scene.add(dir);
 
-    // Blue fill light — gives the cyberpunk tint from below-left
-    const fill = new THREE.DirectionalLight(0x2288FF, 0.5);
+    // Fill light
+    const fill = new THREE.DirectionalLight(0x90b0d0, 0.5);
     fill.position.set(-5, 3, -5);
     this.scene.add(fill);
-
-    // Cyan point light that follows camera area for extra glow
-    const pointLight = new THREE.PointLight(0x00C8FF, 0.8, 30);
-    pointLight.position.set(0, 8, 0);
-    this.scene.add(pointLight);
   }
 
   private setupGround(): void {
-    // Cyberpunk Neon Grid — brighter primary, visible secondary
-    const gridHelper = new THREE.GridHelper(200, 80, 0x00C8FF, 0x1A3050);
+    // Very subtle, clean grid
+    const gridHelper = new THREE.GridHelper(200, 80, 0xffffff, 0xffffff);
     gridHelper.position.y = -0.5;
-    // Make grid lines translucent but visible
     const mat = gridHelper.material;
     if (Array.isArray(mat)) {
-      mat.forEach(m => { m.transparent = true; m.opacity = 0.6; });
+      mat.forEach(m => { m.transparent = true; m.opacity = 0.05; });
     } else {
       mat.transparent = true;
-      mat.opacity = 0.6;
+      mat.opacity = 0.05;
     }
     this.scene.add(gridHelper);
   }

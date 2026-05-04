@@ -43,24 +43,24 @@ export const DIFFICULTY_DIST_INCREMENT = 0.08;
 export const DIFFICULTY_SIZE_DECREMENT = 0.03;
 export const MIN_PLATFORM_SIZE = 0.55;
 
-// ─── Colors (Cyberpunk Theme) ───
+// ─── Colors (Premium 3D Aesthetic) ───
 export const COLORS = {
-  BG_TOP:        0x0B1628, // Deep navy blue (matches poster atmosphere)
-  BG_BOTTOM:     0x091220,
-  CYAN:          0x00C8FF, // Vivid Cyan
-  CRIMSON:       0xFF2244, // Bright Red
-  PURPLE:        0xB026FF, // Electric Purple
-  TG_BLUE:       0x2AABEE, // Telegram Blue — keep recognizable
-  TG_BLUE_DARK:  0x0B1628,
-  TG_GREEN:      0x39FF14, // Neon green
-  PADLOCK_GOLD:  0xFFC800, // Brighter gold
-  SERVER_DARK:   0x1A1A2E, // Dark indigo for server base
-  PLAYER_WHITE:  0x2A2A3A, // Stealth grey-blue
-  PLAYER_ACCENT: 0x00C8FF, // Cyan accent
+  BG_TOP:        0x0F172A, // Slate 900 (Tailwind)
+  BG_BOTTOM:     0x020617, // Slate 950
+  CYAN:          0x38BDF8, // Light Sky Blue
+  CRIMSON:       0xF43F5E, // Rose
+  PURPLE:        0xA855F7, // Purple
+  TG_BLUE:       0x0EA5E9, // Sky 500
+  TG_BLUE_DARK:  0x0369A1, // Sky 700
+  TG_GREEN:      0x22C55E, // Green 500
+  PADLOCK_GOLD:  0xF59E0B, // Amber 500
+  SERVER_DARK:   0x1E293B, // Slate 800
+  PLAYER_WHITE:  0xF8FAFC, // Clean white plane
+  PLAYER_ACCENT: 0x38BDF8,
   SHADOW:        0x000000,
-  AMBIENT:       0x556688,
+  AMBIENT:       0xFFFFFF,
   DIRECTIONAL:   0xFFFFFF,
-  GROUND:        0x0B1628,
+  GROUND:        0x0F172A,
 };
 
 // ─── Platform Types ───
