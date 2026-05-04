@@ -56,26 +56,18 @@ export class Platform {
     const geo = new THREE.BoxGeometry(s, PLATFORM_HEIGHT, s);
 
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x1A3848, // Dark teal base
+      color: 0x44CCEE, // Bright cyan surface
       emissive: COLORS.CYAN,
-      emissiveIntensity: 0.5,
-      roughness: 0.15,
-      metalness: 0.7,
+      emissiveIntensity: 0.3,
+      roughness: 0.05,
+      metalness: 0.6,
     });
 
-    const edgesGeo = new THREE.EdgesGeometry(geo);
-    const edgesMat = new THREE.LineBasicMaterial({ color: COLORS.CYAN });
-    const edges = new THREE.LineSegments(edgesGeo, edgesMat);
-    this.decorations.add(edges);
+    // Glowing edge lines (MeshBasicMaterial so bloom picks them up)
+    this.addGlowingEdges(geo, COLORS.CYAN);
 
-    // Add a small "tail" triangle (message bubble tail)
-    const tailGeo = new THREE.ConeGeometry(0.12, 0.18, 3);
-    const tailMat = new THREE.MeshStandardMaterial({ color: COLORS.CYAN, emissive: COLORS.CYAN, emissiveIntensity: 0.4, roughness: 0.2, metalness: 0.7 });
-    const tail = new THREE.Mesh(tailGeo, tailMat);
-    tail.position.set(-s / 2 - 0.06, -PLATFORM_HEIGHT / 2 + 0.08, -s / 2 + 0.2);
-    tail.rotation.z = Math.PI / 2 + 0.3;
-    tail.castShadow = true;
-    this.decorations.add(tail);
+    // Bottom glow ring
+    this.addBottomGlow(s, COLORS.CYAN);
 
     return new THREE.Mesh(geo, mat);
   }
@@ -85,17 +77,15 @@ export class Platform {
     const r = this.size / 2;
     const geo = new THREE.CylinderGeometry(r, r, PLATFORM_HEIGHT, 16);
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x0A2A0A, // Dark green base
+      color: 0x33DD44, // Bright green surface
       emissive: COLORS.TG_GREEN,
-      emissiveIntensity: 0.5,
-      roughness: 0.15,
-      metalness: 0.7,
+      emissiveIntensity: 0.4,
+      roughness: 0.05,
+      metalness: 0.5,
     });
 
-    const edgesGeo = new THREE.EdgesGeometry(geo);
-    const edgesMat = new THREE.LineBasicMaterial({ color: COLORS.TG_GREEN });
-    const edges = new THREE.LineSegments(edgesGeo, edgesMat);
-    this.decorations.add(edges);
+    this.addGlowingEdges(geo, COLORS.TG_GREEN);
+    this.addBottomGlow(r * 2, COLORS.TG_GREEN);
 
     // Add checkmark on top
     this.addCheckmarkSymbol(r);
@@ -129,25 +119,22 @@ export class Platform {
     const geo = new THREE.BoxGeometry(s, PLATFORM_HEIGHT, s);
     
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x3A2800, // Dark amber base
-      emissive: COLORS.PADLOCK_GOLD,
-      emissiveIntensity: 0.5,
-      roughness: 0.1,
-      metalness: 0.8,
+      color: 0xEEBB33, // Bright warm gold surface
+      emissive: 0xDD9900,
+      emissiveIntensity: 0.3,
+      roughness: 0.05,
+      metalness: 0.9,
     });
 
-    const edgesGeo = new THREE.EdgesGeometry(geo);
-    const edgesMat = new THREE.LineBasicMaterial({ color: COLORS.PADLOCK_GOLD });
-    const edges = new THREE.LineSegments(edgesGeo, edgesMat);
-    this.decorations.add(edges);
+    this.addGlowingEdges(geo, COLORS.PADLOCK_GOLD);
 
     // Add lock shackle on top
     const shackleGeo = new THREE.TorusGeometry(s * 0.2, 0.04, 8, 16, Math.PI);
     const shackleMat = new THREE.MeshStandardMaterial({
       color: COLORS.PADLOCK_GOLD,
       emissive: COLORS.PADLOCK_GOLD,
-      emissiveIntensity: 0.3,
-      roughness: 0.1,
+      emissiveIntensity: 0.5,
+      roughness: 0.05,
       metalness: 0.9,
     });
     const shackle = new THREE.Mesh(shackleGeo, shackleMat);
@@ -171,32 +158,29 @@ export class Platform {
     const s = this.size;
     const geo = new THREE.BoxGeometry(s, PLATFORM_HEIGHT * 1.2, s * 0.7);
     const mat = new THREE.MeshStandardMaterial({
-      color: COLORS.SERVER_DARK,
-      emissive: COLORS.CRIMSON,
-      emissiveIntensity: 0.3,
-      roughness: 0.15,
-      metalness: 0.8,
+      color: 0x2A2A3E, // Dark indigo
+      emissive: 0x1A1A2E,
+      emissiveIntensity: 0.15,
+      roughness: 0.05,
+      metalness: 0.9,
     });
 
-    const edgesGeo = new THREE.EdgesGeometry(geo);
-    const edgesMat = new THREE.LineBasicMaterial({ color: COLORS.CRIMSON });
-    const edges = new THREE.LineSegments(edgesGeo, edgesMat);
-    this.decorations.add(edges);
+    this.addGlowingEdges(geo, 0x4488AA);
 
     // LED dots on top — bright emissive
     for (let i = 0; i < 3; i++) {
       const ledGeo = new THREE.SphereGeometry(0.04, 8, 8);
-      const ledColor = [0x00ff66, 0x00ff66, 0xff6600][i];
-      const ledMat = new THREE.MeshStandardMaterial({ color: ledColor, emissive: ledColor, emissiveIntensity: 2.0 });
+      const ledColor = [0x00ff66, 0xff2244, 0xff8800][i];
+      const ledMat = new THREE.MeshStandardMaterial({ color: ledColor, emissive: ledColor, emissiveIntensity: 3.0 });
       const led = new THREE.Mesh(ledGeo, ledMat);
       led.position.set(-s * 0.2 + i * s * 0.2, PLATFORM_HEIGHT * 0.6 + 0.02, -s * 0.2);
       this.decorations.add(led);
     }
 
-    // Horizontal rack lines
+    // Horizontal rack lines — bright cyan
     for (let i = 0; i < 2; i++) {
-      const lineGeo = new THREE.BoxGeometry(s * 0.8, 0.02, 0.02);
-      const lineMat = new THREE.MeshStandardMaterial({ color: 0x4488AA, emissive: 0x224466, emissiveIntensity: 0.3, roughness: 0.3, metalness: 0.5 });
+      const lineGeo = new THREE.BoxGeometry(s * 0.8, 0.025, 0.025);
+      const lineMat = new THREE.MeshStandardMaterial({ color: 0x00C8FF, emissive: 0x00C8FF, emissiveIntensity: 1.0, roughness: 0.0, metalness: 0.0 });
       const line = new THREE.Mesh(lineGeo, lineMat);
       line.position.set(0, PLATFORM_HEIGHT * 0.6 + 0.01, -s * 0.05 + i * s * 0.2);
       this.decorations.add(line);
@@ -205,7 +189,38 @@ export class Platform {
     return new THREE.Mesh(geo, mat);
   }
 
-  /** (Removed roundBoxEdges for sharp geometry) */
+  /** Add glowing edge outlines using MeshBasicMaterial (participates in Bloom). */
+  private addGlowingEdges(geo: THREE.BufferGeometry, color: number): void {
+    const edgesGeo = new THREE.EdgesGeometry(geo);
+    // Use MeshBasicMaterial — it outputs full brightness which triggers Bloom
+    const edgesMat = new THREE.LineBasicMaterial({ color, linewidth: 2 });
+    const edges = new THREE.LineSegments(edgesGeo, edgesMat);
+    this.decorations.add(edges);
+
+    // Additionally add thin glowing box outlines on top & bottom edges for Bloom pickup
+    // Top edge glow strip
+    const topGlowGeo = new THREE.BoxGeometry(
+      geo.boundingBox ? geo.boundingBox.max.x * 2 : this.size,
+      0.015,
+      geo.boundingBox ? geo.boundingBox.max.z * 2 : this.size
+    );
+    geo.computeBoundingBox();
+    const h = geo.boundingBox ? geo.boundingBox.max.y : PLATFORM_HEIGHT / 2;
+    const topGlowMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.7 });
+    const topGlow = new THREE.Mesh(topGlowGeo, topGlowMat);
+    topGlow.position.y = h;
+    this.decorations.add(topGlow);
+  }
+
+  /** Add a subtle glow ring underneath a platform. */
+  private addBottomGlow(size: number, color: number): void {
+    const ringGeo = new THREE.RingGeometry(size * 0.4, size * 0.55, 32);
+    const ringMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.4, side: THREE.DoubleSide });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = -PLATFORM_HEIGHT / 2 - 0.01;
+    this.decorations.add(ring);
+  }
 
   /** Sink platform during charge. */
   public updateCharge(chargeTime: number): void {

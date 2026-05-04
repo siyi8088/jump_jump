@@ -20,7 +20,7 @@ export const JUMP_HEIGHT        = 2.8;
 export const JUMP_BASE_DURATION = 0.3;
 export const JUMP_DIST_FACTOR   = 0.12;
 export const SQUISH_AMOUNT      = 0.55;
-export const PLAYER_SCALE       = 0.22;
+export const PLAYER_SCALE       = 0.28;
 
 // ─── Platforms ───
 export const PLATFORM_HEIGHT     = 0.6;

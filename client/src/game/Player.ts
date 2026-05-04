@@ -31,46 +31,46 @@ export class Player {
   }
 
   private createAirplane(): THREE.Mesh {
+    // ── Classic Telegram paper plane geometry ──
+    // A sleek folded dart: sharp nose, swept-back wings, raised center ridge
     const geo = new THREE.BufferGeometry();
+    const s = 2.5;
 
-    // Paper airplane vertices – a sleek dart shape
-    const s = 2.5; // scale factor for model
     const vertices = new Float32Array([
-      // 0: Nose (front tip)
-       0,     0.08 * s,  -0.7 * s,
-      // 1: Left wing tip
-      -0.65 * s, -0.03 * s,  0.35 * s,
-      // 2: Right wing tip
-       0.65 * s, -0.03 * s,  0.35 * s,
-      // 3: Ridge (fold line, raised center)
-       0,     0.25 * s,  -0.05 * s,
+      // 0: Nose tip (sharp front point)
+       0,           0.1 * s,   -0.9 * s,
+      // 1: Left wingtip (far out and back)
+      -0.75 * s,    0.0,        0.25 * s,
+      // 2: Right wingtip
+       0.75 * s,    0.0,        0.25 * s,
+      // 3: Center ridge (raised fold line)
+       0,           0.3 * s,    0.0,
       // 4: Tail center
-       0,     0.1 * s,   0.5 * s,
-      // 5: Left inner wing
-      -0.12 * s,  0.06 * s,  0.35 * s,
-      // 6: Right inner wing
-       0.12 * s,  0.06 * s,  0.35 * s,
+       0,           0.08 * s,   0.45 * s,
+      // 5: Left inner fuselage
+      -0.08 * s,    0.05 * s,   0.3 * s,
+      // 6: Right inner fuselage
+       0.08 * s,    0.05 * s,   0.3 * s,
     ]);
 
     const indices = [
-      // Left wing (top)
+      // Left wing top surface
       0, 3, 1,
-      // Right wing (top)
+      // Right wing top surface
       0, 2, 3,
-      // Left tail (top)
+      // Left tail section
       3, 5, 1,
       1, 5, 4,
-      // Right tail (top)
+      // Right tail section
       3, 2, 6,
       6, 2, 4,
-      // Body ridge left
+      // Center ridge panels
       3, 4, 5,
-      // Body ridge right
       3, 6, 4,
-      // Bottom left wing
+      // Left wing underside
       0, 1, 5,
       0, 5, 4,
-      // Bottom right wing
+      // Right wing underside
       0, 6, 2,
       0, 4, 6,
     ];
@@ -79,23 +79,39 @@ export class Player {
     geo.setIndex(indices);
     geo.computeVertexNormals();
 
+    // ── Bright translucent blue material (like poster) ──
     const mat = new THREE.MeshStandardMaterial({
-      color: COLORS.PLAYER_WHITE,
-      emissive: COLORS.PLAYER_ACCENT,
-      emissiveIntensity: 0.6,
+      color: 0x44AAEE,         // Bright TG blue
+      emissive: 0x00BBFF,      // Strong cyan-blue glow
+      emissiveIntensity: 0.8,
       side: THREE.DoubleSide,
       flatShading: true,
-      roughness: 0.1,
-      metalness: 0.9,
+      roughness: 0.0,
+      metalness: 0.3,
+      transparent: true,
+      opacity: 0.9,
     });
 
     const mesh = new THREE.Mesh(geo, mat);
 
-    // Glowing wireframe edges
+    // ── Glowing cyan wireframe edges (Bloom will pick this up) ──
     const edgesGeo = new THREE.EdgesGeometry(geo);
-    const edgesMat = new THREE.LineBasicMaterial({ color: COLORS.PLAYER_ACCENT });
+    const edgesMat = new THREE.LineBasicMaterial({ color: 0x88EEFF });
     const edges = new THREE.LineSegments(edgesGeo, edgesMat);
     mesh.add(edges);
+
+    // ── Bottom glow disc (ground reflection halo) ──
+    const glowGeo = new THREE.CircleGeometry(0.5 * s, 16);
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: 0x00CCFF,
+      transparent: true,
+      opacity: 0.25,
+      side: THREE.DoubleSide,
+    });
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    glow.rotation.x = -Math.PI / 2;
+    glow.position.y = -0.15 * s;
+    mesh.add(glow);
 
     return mesh;
   }
