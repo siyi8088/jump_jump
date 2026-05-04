@@ -43,21 +43,21 @@ export const DIFFICULTY_DIST_INCREMENT = 0.08;
 export const DIFFICULTY_SIZE_DECREMENT = 0.03;
 export const MIN_PLATFORM_SIZE = 0.55;
 
-// ─── Colors (TG theme) ───
+// ─── Colors (TG theme & Deep Space) ───
 export const COLORS = {
-  BG_TOP:        0x0e1621,
-  BG_BOTTOM:     0x17212b,
-  TG_BLUE:       0x2aabee,
-  TG_BLUE_DARK:  0x229ed9,
-  TG_GREEN:      0x5cb85c,
-  PADLOCK_GOLD:  0xf5a623,
-  SERVER_DARK:   0x2c3e50,
-  PLAYER_WHITE:  0xf0f4f8,
-  PLAYER_ACCENT: 0x2aabee,
+  BG_TOP:        0x09101E,
+  BG_BOTTOM:     0x09101E,
+  TG_BLUE:       0x2AABEE,
+  TG_BLUE_DARK:  0x229ED9,
+  TG_GREEN:      0x39FF14, // Neon green
+  PADLOCK_GOLD:  0xFFD700, // Bright gold
+  SERVER_DARK:   0x1F2A38, // Darker server
+  PLAYER_WHITE:  0xFFFFFF, // Pure white
+  PLAYER_ACCENT: 0x2AABEE, // TG blue
   SHADOW:        0x000000,
-  AMBIENT:       0x8899aa,
-  DIRECTIONAL:   0xffeedd,
-  GROUND:        0x0d1117,
+  AMBIENT:       0x8899AA,
+  DIRECTIONAL:   0xFFEEDD,
+  GROUND:        0x09101E, // Match background
 };
 
 // ─── Platform Types ───

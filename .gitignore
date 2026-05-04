@@ -2,6 +2,7 @@
 .env
 .env.production
 server/.env
+deploy.sh
 
 # Dependencies
 node_modules/

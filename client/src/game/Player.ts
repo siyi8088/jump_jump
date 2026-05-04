@@ -79,13 +79,14 @@ export class Player {
     geo.setIndex(indices);
     geo.computeVertexNormals();
 
-    const mat = new THREE.MeshPhongMaterial({
+    const mat = new THREE.MeshStandardMaterial({
       color: COLORS.PLAYER_WHITE,
       emissive: COLORS.PLAYER_ACCENT,
-      emissiveIntensity: 0.08,
+      emissiveIntensity: 0.2,
       side: THREE.DoubleSide,
       flatShading: true,
-      shininess: 60,
+      roughness: 0.2,
+      metalness: 0.6,
     });
 
     const mesh = new THREE.Mesh(geo, mat);

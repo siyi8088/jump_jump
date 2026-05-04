@@ -15,7 +15,7 @@ export class GameScene {
     // ── Scene ──
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(COLORS.BG_TOP);
-    this.scene.fog = new THREE.Fog(COLORS.BG_TOP, 20, 40);
+    this.scene.fog = new THREE.Fog(COLORS.BG_TOP, 10, 35);
 
     // ── Renderer ──
     this.renderer = new THREE.WebGLRenderer({
@@ -50,9 +50,9 @@ export class GameScene {
     const hemi = new THREE.HemisphereLight(0x8899cc, 0x223344, 0.4);
     this.scene.add(hemi);
 
-    // Main directional (sun)
-    const dir = new THREE.DirectionalLight(COLORS.DIRECTIONAL, 1.0);
-    dir.position.set(8, 15, 10);
+    // Main directional (sun/spotlight)
+    const dir = new THREE.DirectionalLight(COLORS.DIRECTIONAL, 1.2);
+    dir.position.set(8, 18, 10);
     dir.castShadow = true;
     dir.shadow.mapSize.set(2048, 2048);
     dir.shadow.camera.left   = -CAMERA_FRUSTUM * 2;
@@ -60,8 +60,8 @@ export class GameScene {
     dir.shadow.camera.top    =  CAMERA_FRUSTUM * 2;
     dir.shadow.camera.bottom = -CAMERA_FRUSTUM * 2;
     dir.shadow.camera.near = 1;
-    dir.shadow.camera.far  = 40;
-    dir.shadow.bias = -0.002;
+    dir.shadow.camera.far  = 50;
+    dir.shadow.bias = -0.001;
     this.scene.add(dir);
 
     // Fill light (subtle blue tint from TG palette)
@@ -74,8 +74,9 @@ export class GameScene {
     const geo = new THREE.PlaneGeometry(200, 200);
     const mat = new THREE.MeshStandardMaterial({
       color: COLORS.GROUND,
-      roughness: 0.95,
-      metalness: 0.05,
+      roughness: 1.0,
+      metalness: 0.0,
+      depthWrite: false, // Helps blend with fog
     });
     const ground = new THREE.Mesh(geo, mat);
     ground.rotation.x = -Math.PI / 2;

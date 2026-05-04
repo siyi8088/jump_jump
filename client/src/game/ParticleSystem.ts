@@ -46,6 +46,51 @@ export class ParticleSystem {
     }
   }
 
+  /** Emit particles for jump trail. */
+  public emitTrail(pos: THREE.Vector3): void {
+    const color = new THREE.Color(Math.random() > 0.5 ? 0x3390EC : 0xFFFFFF);
+    // Slight random offset from center
+    const offsetPos = pos.clone().add(new THREE.Vector3(
+      (Math.random() - 0.5) * 0.1,
+      (Math.random() - 0.5) * 0.1,
+      (Math.random() - 0.5) * 0.1
+    ));
+    
+    const velocity = new THREE.Vector3(
+      (Math.random() - 0.5) * 0.5,
+      -Math.random() * 0.5,
+      (Math.random() - 0.5) * 0.5,
+    );
+
+    const particle: Particle = {
+      position: offsetPos,
+      velocity,
+      life: 0.3,
+      maxLife: 0.3,
+      color,
+      size: 0.02,
+    };
+    this.createParticleMesh(particle, color, 0.02);
+  }
+
+  private createParticleMesh(particle: Particle, color: THREE.Color, size: number): void {
+    let mesh: THREE.Mesh;
+    if (this.pool.length > 0) {
+      mesh = this.pool.pop()!;
+      (mesh.material as THREE.MeshBasicMaterial).color.copy(color);
+      mesh.visible = true;
+    } else {
+      const mat = new THREE.MeshBasicMaterial({ color });
+      mesh = new THREE.Mesh(this.geometry, mat);
+      this.scene.add(mesh);
+    }
+
+    mesh.position.copy(particle.position);
+    mesh.scale.setScalar(size / 0.04);
+    this.meshes.push(mesh);
+    this.particles.push(particle);
+  }
+
   private spawn(origin: THREE.Vector3, color: THREE.Color, size: number, life: number): void {
     const velocity = new THREE.Vector3(
       (Math.random() - 0.5) * 3,
@@ -62,22 +107,7 @@ export class ParticleSystem {
       size,
     };
 
-    // Get or create mesh
-    let mesh: THREE.Mesh;
-    if (this.pool.length > 0) {
-      mesh = this.pool.pop()!;
-      (mesh.material as THREE.MeshBasicMaterial).color.copy(color);
-      mesh.visible = true;
-    } else {
-      const mat = new THREE.MeshBasicMaterial({ color });
-      mesh = new THREE.Mesh(this.geometry, mat);
-      this.scene.add(mesh);
-    }
-
-    mesh.position.copy(origin);
-    mesh.scale.setScalar(size / 0.04);
-    this.meshes.push(mesh);
-    this.particles.push(particle);
+    this.createParticleMesh(particle, color, size);
   }
 
   /** Update all particles. */

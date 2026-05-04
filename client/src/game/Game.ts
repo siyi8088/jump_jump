@@ -141,9 +141,16 @@ export class Game {
         if (Math.floor(this.chargeTime / 0.12) !== Math.floor((this.chargeTime - dt * CHARGE_SPEED) / 0.12)) {
           this.audio.playCharge(this.chargeTime / MAX_CHARGE_TIME);
         }
+        // Emit charge particles
+        if (Math.random() > 0.5) {
+          this.particles.emitTrail(this.player.getPosition());
+        }
         break;
 
       case GameState.JUMPING: {
+        // Emit trail particles
+        this.particles.emitTrail(this.player.getPosition());
+        
         const result = this.physics.update(dt);
         if (result) {
           if (result.landed) {

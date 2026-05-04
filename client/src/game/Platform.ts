@@ -58,16 +58,17 @@ export class Platform {
     // Round edges slightly via vertex displacement
     this.roundBoxEdges(geo, 0.1);
 
-    const mat = new THREE.MeshPhongMaterial({
+    const mat = new THREE.MeshStandardMaterial({
       color: COLORS.TG_BLUE,
       emissive: COLORS.TG_BLUE,
-      emissiveIntensity: 0.05,
-      shininess: 40,
+      emissiveIntensity: 0.15,
+      roughness: 0.2,
+      metalness: 0.1,
     });
 
     // Add a small "tail" triangle (message bubble tail)
     const tailGeo = new THREE.ConeGeometry(0.12, 0.18, 3);
-    const tailMat = new THREE.MeshPhongMaterial({ color: COLORS.TG_BLUE });
+    const tailMat = new THREE.MeshStandardMaterial({ color: COLORS.TG_BLUE, roughness: 0.2, metalness: 0.1 });
     const tail = new THREE.Mesh(tailGeo, tailMat);
     tail.position.set(-s / 2 - 0.06, -PLATFORM_HEIGHT / 2 + 0.08, -s / 2 + 0.2);
     tail.rotation.z = Math.PI / 2 + 0.3;
@@ -81,11 +82,12 @@ export class Platform {
   private createCheckmark(): THREE.Mesh {
     const r = this.size / 2;
     const geo = new THREE.CylinderGeometry(r, r, PLATFORM_HEIGHT, 24);
-    const mat = new THREE.MeshPhongMaterial({
+    const mat = new THREE.MeshStandardMaterial({
       color: COLORS.TG_GREEN,
       emissive: COLORS.TG_GREEN,
-      emissiveIntensity: 0.06,
-      shininess: 50,
+      emissiveIntensity: 0.2,
+      roughness: 0.15,
+      metalness: 0.2,
     });
 
     // Add checkmark on top
@@ -107,7 +109,7 @@ export class Platform {
     shape.closePath();
 
     const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.03, bevelEnabled: false });
-    const mat = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.5, roughness: 0.1 });
     const check = new THREE.Mesh(geo, mat);
     check.rotation.x = -Math.PI / 2;
     check.position.y = PLATFORM_HEIGHT / 2 + 0.02;
@@ -119,18 +121,20 @@ export class Platform {
     const s = this.size;
     const geo = new THREE.BoxGeometry(s, PLATFORM_HEIGHT, s, 1, 1, 1);
     this.roundBoxEdges(geo, 0.08);
-    const mat = new THREE.MeshPhongMaterial({
+    const mat = new THREE.MeshStandardMaterial({
       color: COLORS.PADLOCK_GOLD,
       emissive: COLORS.PADLOCK_GOLD,
-      emissiveIntensity: 0.04,
-      shininess: 70,
+      emissiveIntensity: 0.1,
+      roughness: 0.1,
+      metalness: 0.6,
     });
 
     // Add lock shackle on top
     const shackleGeo = new THREE.TorusGeometry(s * 0.2, 0.04, 8, 16, Math.PI);
-    const shackleMat = new THREE.MeshPhongMaterial({
+    const shackleMat = new THREE.MeshStandardMaterial({
       color: 0xd4941a,
-      shininess: 80,
+      roughness: 0.1,
+      metalness: 0.8,
     });
     const shackle = new THREE.Mesh(shackleGeo, shackleMat);
     shackle.position.y = PLATFORM_HEIGHT / 2 + s * 0.15;
@@ -139,7 +143,7 @@ export class Platform {
 
     // Keyhole
     const keyGeo = new THREE.CircleGeometry(s * 0.06, 12);
-    const keyMat = new THREE.MeshPhongMaterial({ color: 0x1a1a1a });
+    const keyMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 });
     const keyhole = new THREE.Mesh(keyGeo, keyMat);
     keyhole.position.set(0, PLATFORM_HEIGHT / 2 + 0.01, s * 0.08);
     keyhole.rotation.x = -Math.PI / 2;
@@ -152,9 +156,10 @@ export class Platform {
   private createServer(): THREE.Mesh {
     const s = this.size;
     const geo = new THREE.BoxGeometry(s, PLATFORM_HEIGHT * 1.2, s * 0.7, 1, 1, 1);
-    const mat = new THREE.MeshPhongMaterial({
+    const mat = new THREE.MeshStandardMaterial({
       color: COLORS.SERVER_DARK,
-      shininess: 30,
+      roughness: 0.5,
+      metalness: 0.4,
     });
 
     // LED dots on top
@@ -170,7 +175,7 @@ export class Platform {
     // Horizontal rack lines
     for (let i = 0; i < 2; i++) {
       const lineGeo = new THREE.BoxGeometry(s * 0.8, 0.02, 0.02);
-      const lineMat = new THREE.MeshPhongMaterial({ color: 0x4a6580 });
+      const lineMat = new THREE.MeshStandardMaterial({ color: 0x4a6580, roughness: 0.3, metalness: 0.5 });
       const line = new THREE.Mesh(lineGeo, lineMat);
       line.position.set(0, PLATFORM_HEIGHT * 0.6 + 0.01, -s * 0.05 + i * s * 0.2);
       this.decorations.add(line);
