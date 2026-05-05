@@ -85,12 +85,14 @@ export class Player {
     // 自动计算法线，产生实体 3D 光影
     geo.computeVertexNormals();
 
-    // ── 材质：纯正 TG 蓝 + 强烈的折纸光影 ──
+    // ── 材质：加入自发光，拒绝死黑阴影 ──
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x1c6fa3,        // 纯正 Telegram 蓝
-      roughness: 0.2,         // 纸张微带反光
+      color: 0x289FE9,        // 你的定制蓝
+      emissive: 0x289FE9,     // 💡 让阴影底色也发散出同样的蓝色
+      emissiveIntensity: 0.4, // 💡 发光强度调到 0.4：刚好能照亮背光的左翼，又不会破坏立体的明暗对比
+      roughness: 0.2,         
       metalness: 0.1,
-      flatShading: true,      // 凸显带有厚度的边缘棱角
+      flatShading: true,      
       side: THREE.DoubleSide,
     });
 
