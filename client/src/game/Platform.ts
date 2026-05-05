@@ -57,7 +57,7 @@ export class Platform {
     const geo = new RoundedBoxGeometry(s, PLATFORM_HEIGHT, s, 4, 0.05);
 
     const mat = new THREE.MeshPhysicalMaterial({
-      color: COLORS.CYAN,
+      color: COLORS.TG_BLUE_DARK, // Deeper blue to contrast with the bright white plane
       roughness: 0.2,
       metalness: 0.1,
       clearcoat: 1.0,

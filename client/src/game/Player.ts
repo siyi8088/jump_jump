@@ -85,13 +85,13 @@ export class Player {
     // 自动计算法线，产生实体 3D 光影
     geo.computeVertexNormals();
 
-    // ── 材质：加入自发光，拒绝死黑阴影 ──
+    // ── 材质：抗过曝、纯正纸张漫反射 ──
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x289FE9,        // 你的定制蓝
-      emissive: 0x289FE9,     // 💡 让阴影底色也发散出同样的蓝色
-      emissiveIntensity: 0.4, // 💡 发光强度调到 0.4：刚好能照亮背光的左翼，又不会破坏立体的明暗对比
-      roughness: 0.2,         
-      metalness: 0.1,
+      color: 0x289FE9,        // 保持你想要的 TG 蓝本体
+      emissive: 0x062845,     // 💡【核心修改】换成极深的暗蓝色！只给阴影微微垫底，绝不让受光面过曝
+      emissiveIntensity: 0.8, // 配合深色，保持阴影不死黑
+      roughness: 0.5,         // 💡【核心修改】调高粗糙度！纸张表面是粗糙的，这样能彻底消除那种“塑料反光”
+      metalness: 0.0,         // 💡【核心修改】纸飞机不导电，金属度设为 0
       flatShading: true,      
       side: THREE.DoubleSide,
     });
