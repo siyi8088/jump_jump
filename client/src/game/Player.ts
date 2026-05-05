@@ -84,6 +84,9 @@ export class Player {
     
     // 自动计算法线，产生实体 3D 光影
     geo.computeVertexNormals();
+    
+    // 💡【修复】将几何体旋转 180 度，使得机头朝向与移动方向 (dir) 一致
+    geo.rotateY(Math.PI);
 
     // ── 材质：抗过曝、纯正纸张漫反射 ──
     const mat = new THREE.MeshStandardMaterial({
