@@ -33,7 +33,7 @@ export class Player {
   private createAirplane(): THREE.Mesh {
     const geo = new THREE.BufferGeometry();
     // 稍微放大一点，让它在方块上更有存在感
-    const s = 1.5; 
+    const s = 1.2; 
     // 设定纸张厚度，让边缘在光照下产生高光
     const t = 0.06 * s; 
 
