@@ -13,7 +13,7 @@ export const initBot = () => {
 
   bot.start((ctx) => {
     // 这里直接使用 Caddy 代理的前端静态资源 URL
-    const imageUrl = 'https://jump.garden/poster.png';
+    const imageUrl = 'https://jump.garden/poster.jpg';
     const webAppUrl = 'https://jump.garden';
 
     const caption = (

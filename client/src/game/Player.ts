@@ -30,53 +30,74 @@ export class Player {
     this.body.castShadow = true;
   }
 
-private createAirplane(): THREE.Mesh {
+  private createAirplane(): THREE.Mesh {
     const geo = new THREE.BufferGeometry();
     // 稍微放大一点，让它在方块上更有存在感
     const s = 1.5; 
+    // 设定纸张厚度，让边缘在光照下产生高光
+    const t = 0.06 * s; 
 
-    // ── 真正的 3D 对称折纸模型 ──
+    // ── ✨ 终极带厚度实体折纸模型 (12顶点) ✨ ──
     const vertices = new Float32Array([
-      // 0: 机头 (Nose) - 尖端向前
-       0.0,       0.0,      -1.5 * s,
-      // 1: 左翼尖 (Left Wingtip) - 展翼拉宽，体现 TG 飞机的宽大感
-      -1.2 * s,   0.3 * s,   1.0 * s,
-      // 2: 右翼尖 (Right Wingtip)
-       1.2 * s,   0.3 * s,   1.0 * s,
-      // 3: 顶部中心折谷 (Center Top Valley) - 微微下沉，形成机翼的上扬角
-       0.0,       0.1 * s,   1.0 * s,
-      // 4: 底部龙骨 (Bottom Keel) - 极其关键！深深向下突出，创造出巨大的 3D 体积感
-       0.0,      -0.8 * s,   0.8 * s,
+        // --- 上层表面 (Top Layer) : 保持你微调的完美比例 ---
+        0.0,       0.0,      -1.0 * s, // 0: 机头 (Nose)
+      -0.95 * s,  0.15 * s,   1.0 * s, // 1: 左翼尖
+        0.95 * s,  0.15 * s,   1.0 * s, // 2: 右翼尖
+      -0.21 * s,   0.2 * s,   1.0 * s, // 3: 左机背折痕 
+        0.21 * s,   0.2 * s,   1.0 * s, // 4: 右机背折痕 
+        0.0,      -0.4 * s,   1.0 * s, // 5: 底部深龙骨 
+
+        // --- 下层表面 (Bottom Layer) : 整体在Y轴向下平移厚度 t ---
+        0.0,       0.0 - t,      -1.0 * s, // 6: 底机头
+      -0.95 * s,  0.15 * s - t,   1.0 * s, // 7: 底左翼尖
+        0.95 * s,  0.15 * s - t,   1.0 * s, // 8: 底右翼尖
+      -0.21 * s,   0.2 * s - t,   1.0 * s, // 9: 底左机背
+        0.21 * s,   0.2 * s - t,   1.0 * s, // 10:底右机背
+        0.0,      -0.4 * s - t,   1.0 * s, // 11:底龙骨
     ]);
 
+    // 完美缝合的 20 个三角面，构成完整的封闭外壳
     const indices = [
-      0, 1, 3, // 顶部左翼
-      0, 3, 2, // 顶部右翼
-      0, 4, 1, // 底部左侧 (受光面/背光面)
-      0, 2, 4, // 底部右侧 (受光面/背光面)
-      1, 4, 3, // 尾部左侧
-      2, 3, 4, // 尾部右侧
+      // --- 上表面 ---
+      0, 1, 3, 
+      0, 4, 2, 
+      0, 3, 5, 
+      0, 5, 4,
+      
+      // --- 下表面 (反向缠绕，确保法线朝外) ---
+      6, 9, 7,   
+      6, 8, 10,  
+      6, 11, 9,  
+      6, 10, 11,
+      
+      // --- 侧面四周封边 (缝合上下层) ---
+      0, 6, 8,   0, 8, 2,   // 右前边缘 (0->2)
+      2, 8, 10,  2, 10, 4,  // 右后翼边缘 (2->4)
+      4, 10, 11, 4, 11, 5,  // 右机腹边缘 (4->5)
+      5, 11, 9,  5, 9, 3,   // 左机腹边缘 (5->3)
+      3, 9, 7,   3, 7, 1,   // 左后翼边缘 (3->1)
+      1, 7, 6,   1, 6, 0    // 左前边缘 (1->0)
     ];
 
     geo.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
     geo.setIndex(indices);
     
-    // 自动计算法线，这是产生 3D 光影的前提！
+    // 自动计算法线，产生实体 3D 光影
     geo.computeVertexNormals();
 
     // ── 材质：纯正 TG 蓝 + 强烈的折纸光影 ──
     const mat = new THREE.MeshStandardMaterial({
-      color: 0x2AABEE,        // 纯正 Telegram 蓝
+      color: 0x1c6fa3,        // 纯正 Telegram 蓝
       roughness: 0.2,         // 纸张微带反光
       metalness: 0.1,
-      flatShading: true,      // 绝对不能删！这是展现“折纸棱角”的灵魂属性
+      flatShading: true,      // 凸显带有厚度的边缘棱角
       side: THREE.DoubleSide,
     });
 
     const mesh = new THREE.Mesh(geo, mat);
 
     // ── 保留高光白边 ──
-    // 给所有物理折痕加上白边，增强赛博感
+    // 给所有物理折痕和厚度切面加上白边，增强赛博感
     const edges = new THREE.EdgesGeometry(geo);
     const lineMat = new THREE.LineBasicMaterial({ 
       color: 0xffffff, 
@@ -86,7 +107,6 @@ private createAirplane(): THREE.Mesh {
     const lineSegments = new THREE.LineSegments(edges, lineMat);
     mesh.add(lineSegments);
 
-    // 清除掉上一版里乱七八糟的初始旋转！
     // 让它默认笔直朝前，方向交给游戏逻辑 (faceDirection) 去控制
     mesh.rotation.set(0, 0, 0);
 
